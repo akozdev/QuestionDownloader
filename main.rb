@@ -34,37 +34,58 @@ config_replies = {
 }
 
 # Complete question is the question and all replies
-# def gather_complete_questions(config_questions, config_replies)
-# 	begin
-# 		while true
-# 			questions = get_questions(config_questions)
+def gather_complete_questions(config_questions, config_replies)
+	begin
+		while true
+			questions = get_questions(config_questions)
 
-# 			questions.each do |question|
-# 				config_replies[:question_id] = question["id"]
+			questions.each do |question|
+				config_replies[:question_id] = question["id"]
 
-# 				replies = get_replies(config_replies)
+				replies = get_replies(config_replies)
 	
-# 				# Consturct complete question
-	
-# 				# Append the complete question to a file
+				# Consturct complete question
+				complete_question = {
+					_class: "question",
+					id: question["id"],
+					created: question["created"],
+					title: question["title"],
+					body: question["body"],
+					num_replies: question["num_replies"],
+					num_follows: question["num_follows"],
+					num_reply_upvotes: question["num_reply_upvotes"],
+					modified: question["modified"],
+					last_activity: question["last_activity"],
+					is_read: question["is_read"],
+					course: {
+						_class: "course",
+						id: question["course"]["id"],
+						title: question["course"]["title"],
+						url: question["course"]["url"]
+					},
+					is_instructor: question["is_instructor"],
+					num_upvotes: question["num_upvotes"],
+					next_reply: question["next_reply"],
+					previous_reply: question["previous_reply"],
+					replies: replies
+				}
+				
+			
+				# Append the complete question to a file
+				# Dir.mkdir('./.data') unless File.directory?('./.data')
+				# File.write('./.data/response.json', complete_question.to_json)
 
-# 			end
+			end
 
-# 			# Increment page to get the next page in pagination
-# 			config_questions[:page] += 1
-# 		end
-# 	rescue => exception
-# 		puts exception.message
-# 	end
-# end
+			# Increment page to get the next page in pagination
+			config_questions[:page] += 1
+		end
+	rescue => exception
+		puts exception.message
+	end
+end
 
-# gather_complete_questions(config_questions, config_replies)
-
-replies = get_replies(config_replies)
-
-p replies
-
-
+gather_complete_questions(config_questions, config_replies)
 
 
 
@@ -74,18 +95,6 @@ p replies
 
 # Dir.mkdir('./.data') unless File.directory?('./.data')
 # File.write('./.data/response.json', response_hash.to_json)
-
-
-
-
-
-
-# complete_question = {
-#   _class: "question",
-#   id: "",
-
-# }
-
 
 
 

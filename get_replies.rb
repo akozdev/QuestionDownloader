@@ -22,7 +22,6 @@ def get_replies(config)
 
         # Increment page to fetch the next page from pagination
         config[:page] += 1
-
     rescue => exception
       # If the next page in pagination doesn't exist, return replies
       return replies
