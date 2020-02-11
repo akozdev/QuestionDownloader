@@ -10,6 +10,7 @@ def get_replies(config)
     url = "https://www.udemy.com/instructor-api/v1/courses/#{config[:course_id]}/questions/#{config[:question_id]}/replies/?page=#{config[:page]}&page_size=#{config[:page_size]}"
 
     begin
+      puts config[:question_id]
         # Send http request and parse the response to hash
         response_hash = HTTParty.get(url, :headers => config[:headers]).parsed_response
 

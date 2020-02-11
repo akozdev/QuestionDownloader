@@ -28,15 +28,18 @@ config_questions = {
 
 config_replies = {
 	course_id: COURSE_ID,
-	question_id: "x01LQyh7JLQT83n2j4ogUXNxQ==",
-	page: PAGE,
-	page_size: PAGE_SIZE,
+	question_id: "",
+	page: 1,
+	page_size: 100,
 	headers: headers
 }
 
 # Complete question is the question and all replies
 def gather_complete_questions(config_questions, config_replies)
 	begin
+		# Store complete questions
+		complete_questions = []
+
 		while true
 			questions = get_questions(config_questions)
 
@@ -44,22 +47,24 @@ def gather_complete_questions(config_questions, config_replies)
 				config_replies[:question_id] = question["id"]
 
 				replies = get_replies(config_replies)
+
+				p replies
 	
 				# Consturct complete question
 				complete_question = construct_complete_question(question, replies)
 				
-			
-				# Append the complete question to a file
-				# Dir.mkdir('./.data') unless File.directory?('./.data')
-				# File.write('./.data/response.json', complete_question.to_json)
+				complete_questions.push(complete_question)
 
+				Dir.mkdir('./.data') unless File.directory?('./.data')
+				File.write('./.data/response.json', complete_questions.to_json)
 			end
 
 			# Increment page to get the next page in pagination
 			config_questions[:page] += 1
 		end
 	rescue => exception
-		puts exception.message
+		puts "No more questions to download..."
+		return
 	end
 end
 
